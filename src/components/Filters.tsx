@@ -47,7 +47,14 @@ const FilterSection = styled.section`
     border: 2px solid #000000;
   }
 `;
-const Filters: React.FC = () => {
+
+interface Props  {
+  btnClick: React.MouseEventHandler<HTMLButtonElement>;
+  filter: (opt:string) => void;
+}
+
+
+const Filters: React.FC<Props> = ( {btnClick, filter}) => {
   const cousines: string[] = [
     "African",
     "American",
@@ -76,6 +83,7 @@ const Filters: React.FC = () => {
     "Thai",
     "Vietnamese",
   ];
+
   return (
     <FilterSection>
       <h1>Search for recipes by cousines origin!</h1>
@@ -85,16 +93,17 @@ const Filters: React.FC = () => {
             <div className="wrapper" key={origin}>
               <input
                 type="checkbox"
+                value={origin}
                 id={origin}
-                name={origin}
-                onChange={() => console.log("click")}
-              />
+                name="mycheckboxes"
+                onClick={()=>filter(origin)}
+                />
               <label htmlFor={origin}>{origin}</label>
             </div>
           );
         })}
       </div>
-      <button>Search</button>
+      <button onClick={btnClick}>Search</button>
     </FilterSection>
   );
 };
