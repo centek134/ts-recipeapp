@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import Filters from "./components/Filters";
+import ProductCard from "./components/ProductCard";
 import "./App.css";
 
 const Container = styled.main`
@@ -8,9 +9,15 @@ const Container = styled.main`
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: center;
 `;
-
+const DishSection = styled.section`
+  width: 100%;
+  margin-top: 20px;
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  grid-row-gap: 20px;
+  justify-items: center;
+`;
 interface Recipe {
   recipe: {
     id: number;
@@ -52,22 +59,27 @@ const App = () => {
     }
   };
 
+  
+  const dishInfo = (id:number) => {
+    fetch(`https://api.spoonacular.com/recipes/${id}/card?&apiKey=2f82075fb2ab456f8f690ee0710297d5`, {
+      method:"GET"
+    }).then(response => response.json())
+    .then(data => console.log(data));
+    console.log("test");
+  };
+
   return (
     <Container>
       <Filters btnClick={foodSearch}  filter = {setFilters}/>
-      <div>
+      <DishSection>
         {recipes
           ? recipes.map((rec,i) => {
               return (
-                <React.Fragment key={i}>
-                  <p>{rec.title}</p>
-                  <img src={rec.image} width={50} height={50} alt="" />
-                  <p>{rec.id}</p>
-                </React.Fragment>
+                <ProductCard click={dishInfo} key={i} title={rec.title} imgSrc={rec.image} id={rec.id}/>
               );
             })
           : null}
-      </div>
+      </DishSection>
     </Container>
   );
 };
