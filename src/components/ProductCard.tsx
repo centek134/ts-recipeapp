@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import {Link} from "react-router-dom";
 
 const Card = styled.div`
     width: 400px;
@@ -20,18 +21,23 @@ const Card = styled.div`
         height: 70%;
 
     }
-    & > button {
-        cursor: pointer;
+    & > a{
         height: 10%;
-        background-color: #ffffff;
-        color: #000000;
-        font-size: 20px;
-        border: none;
-        transition: 0.5s;
-    }
-    & > button:hover{
-        background-color: #000000;
-        color: #ffffff;
+        width: 100%;
+        & > button {
+            cursor: pointer;
+            height: 100%;
+            width: 100%;
+            background-color: #ffffff;
+            color: #000000;
+            font-size: 20px;
+            border: none;
+            transition: 0.5s;
+        }
+        & > button:hover{
+            background-color: #000000;
+            color: #ffffff;
+        }
     }
 `;
 
@@ -39,16 +45,17 @@ interface Props {
     title:string;
     imgSrc:string;
     id:number;
-    click: (id:number) => void;
 
 
 }
-const ProductCard: React.FC<Props> = ({title,imgSrc,id,click}) => {
+const ProductCard: React.FC<Props> = ({title,imgSrc,id}) => {
     return (
         <Card>
             <h2>{title}</h2>
             <img src={imgSrc} alt={title}/>
-            <button onClick={() => click(id)}>More info</button>
+            <Link to={`id?=${id.toString()}`}>
+            <button className='btn'>More info</button>
+            </Link>
         </Card>
     )
 }
