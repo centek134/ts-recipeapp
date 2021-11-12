@@ -62,6 +62,14 @@ const Container = styled.main`
                 }
             }
         }
+        & > div.info{
+            width: 100%;
+            font-size: 20px;
+            background-color: #86c53f;
+            & > ul {
+                padding: 15px 0 0 30px;
+            }
+        }
     }
 `;
 
@@ -70,20 +78,44 @@ interface Dish {
         title:string;
         image:string;
         diet:string[];
-        ingredients:object[];
+        extendedIngredients:{
+            name:string;
+            image:string;
+            measures:{
+                metric:{
+                    amount:number;
+                    unitLong:string;
+                }
+                us:{
+                   amount:number;
+                   unitLong:string; 
+                }
+            }
+        }[];
         suggestedPrice:number;
-        preparingTime:number;
+        readyInMinutes:number;
         servings:number;
         vegan:boolean;
         vegetarian:boolean;
         veryHealthy:boolean;
         instructions:string;
+        nutrition:{
+            nutrients:{
+                name:string;
+                amount:number;
+                unit:string;
+                percentOfDailyNeeds:number;
+            }[]
+        }
     }
 };
 
 const FoodDetails = () => {
 
     const [dishDetails, setDishDetails] = useState<Dish["data"]>();
+    const [showIngredients, setShowIngredients] = useState<boolean>(true);
+    const [prepareInfo, setPrepareInfo] = useState<boolean>(false);
+    const [showInfo, setShowInfo] = useState<boolean>(false);
     
     useEffect( () => {
         fetch(
@@ -101,6 +133,28 @@ const FoodDetails = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     },[])
 
+    const infoBtnHandler = (opt:string) => {
+        switch (opt) {
+            case "ingredients":
+                setShowIngredients(true);
+                setPrepareInfo(false);
+                setShowInfo(false);
+                break;
+            case "preparing":
+                setPrepareInfo(true);
+                setShowInfo(false);
+                setShowIngredients(false);
+                break;
+            case "info":
+                setShowInfo(true);
+                setPrepareInfo(false);
+                setShowIngredients(false);
+                break;        
+            default: return;
+               
+        }
+    }
+
     return (
         <Container>
             <section>
@@ -112,9 +166,35 @@ const FoodDetails = () => {
                 </div>
                 <img src={dishDetails?.image} alt={dishDetails?.title} />
                 <div className='section_buttons'>
-                    <button>Ingredients</button>
-                    <button>Dish preparing</button>
-                    <button>Additional info</button>
+                    <button onClick={() => infoBtnHandler("ingredients")}>Ingredients</button>
+                    <button onClick={() => infoBtnHandler("preparing")}>Dish preparing</button>
+                    <button onClick={() => infoBtnHandler("info")}>Additional info</button>
+                </div>
+                <div className="info">
+                    {showIngredients? <ul>{dishDetails?.extendedIngredients.map((ing, i) => {
+                        return(
+                            <li key={i}>{ing.measures.metric.amount} {ing.measures.metric.unitLong} of {ing.name} </li>
+                        )
+                    })}</ul> : null}
+                    {prepareInfo? <div>
+                        <ul>
+                            <li>Servings: {dishDetails?.servings}</li>
+                            <li>Preparing time: {dishDetails?.readyInMinutes} min</li>
+                            <li>Suggested price: {dishDetails?.suggestedPrice}</li>
+                        </ul>
+                        <p>{dishDetails?.instructions}</p> 
+                        </div>
+                        : null }
+                        
+                    {showInfo? dishDetails?.nutrition.nutrients.map(ing => {
+                        return(
+                            <div>
+                                <h5>{ing.name}</h5>
+                                <p>{ing.amount} {ing.unit}</p>
+                                <p>Daiy needs: {ing.percentOfDailyNeeds}</p>
+                            </div>
+                        )
+                    }) : null}
                 </div>
             </section>
             
