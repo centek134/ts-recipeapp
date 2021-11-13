@@ -10,19 +10,35 @@ const FilterSection = styled.section`
   height: 450px;
   background-color: #ffffff;
   border-bottom: 3px solid black;
+  @media only screen and (max-width:500px){
+        justify-content: space-evenly;
+      }
   & > h1 {
     font-family: "Mochiy Pop P One", sans-serif;
     text-align: center;
     font-size: 30px;
     letter-spacing: 1px;
+    @media only screen and (max-width:900px){
+        font-size: 25px;
+      }
+      @media only screen and (max-width:700px){
+        font-size: 20px;
+      }
+      @media only screen and (max-width:500px){
+        font-size: 15px;
+      }
   }
   & > .input_div {
     padding: 0 10px;
     width: 100%;
-    height: 200px;
+    min-height: 200px;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     grid-template-rows: repeat(7, 1fr);
+    @media only screen and (max-width:600px){
+        grid-template-columns: repeat(2,1fr);
+        grid-template-rows: repeat(14,1fr);
+      }
     & > .wrapper > input {
       width: 30px;
     }
@@ -30,6 +46,12 @@ const FilterSection = styled.section`
       cursor: pointer;
       font-size: 25px;
       font-weight: 500;
+      @media only screen and (max-width:900px){
+        font-size: 20px;
+      }
+      @media only screen and (max-width:700px){
+        font-size: 15px;
+      }
     }
   }
   & > button {
@@ -40,6 +62,10 @@ const FilterSection = styled.section`
     background-color: #ffffff;
     position: relative;
     transition: 0.5s;
+    @media only screen and (max-width:500px){
+        font-size: 15px;
+        padding: 5px 50px;
+      }
   }
   & > button:hover {
     background-color: #000000;
