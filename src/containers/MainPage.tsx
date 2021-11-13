@@ -15,6 +15,12 @@ const DishSection = styled.section`
   grid-template-columns: repeat(3, 1fr);
   grid-row-gap: 20px;
   justify-items: center;
+  @media only screen and (max-width:1300px){
+    grid-template-columns: repeat(2, 1fr);
+  }
+  @media only screen and (max-width:900px){
+    grid-template-columns: 1fr;
+  }
 `;
 interface Recipe {
   recipe: {
@@ -38,7 +44,6 @@ const MainPage = () => {
         .then((data) => {
           console.log("Data", data);
           setRecipes(data.results);
-          console.log("myrecipes list", recipes);
         })
         .catch((err) => console.log(err));
     };
