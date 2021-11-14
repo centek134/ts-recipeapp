@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-
+import AdditionalInfo from "../components/FoodDetails/AdditionalInfo";
+import DishPreparing from "../components/FoodDetails/DishPreparing";
+import IngredientsList from "../components/FoodDetails/IngredientsList";
 const Container = styled.main`
   width: 100%;
   background-color: #ebebeb;
@@ -71,32 +73,6 @@ const Container = styled.main`
       font-size: 20px;
       background-color: #000000;
       color: #ffffff;
-      & > .ingr_list {
-        padding: 15px 0 0 30px;
-        & > li {
-          padding: 10px 0;
-        }
-      }
-      & > .prepare_info{
-          padding: 10px;
-          & > ul {
-              list-style: none;
-              margin-bottom: 20px;
-          }
-      }
-      & > table {
-        margin: 0 auto;
-        width: 90%;
-        & > tbody > tr {
-          &:hover {
-            background-color: #ffffff;
-            color: #000000;
-          }
-          & > td {
-            padding: 5px 0;
-          }
-        }
-      }
     }
   }
 `;
@@ -182,7 +158,6 @@ const FoodDetails = () => {
       default:
         return;
     };
-
     btnClassHandler(e)
   };
 
@@ -195,21 +170,9 @@ const FoodDetails = () => {
       <section>
         <h1 className="title">{dishDetails?.title}</h1>
         <div className="section_tags">
-          {dishDetails?.vegan ? (
-            <p className="green">Vegan</p>
-          ) : (
-            <p className="red">Vegan</p>
-          )}
-          {dishDetails?.vegetarian ? (
-            <p className="green">Vegetarian</p>
-          ) : (
-            <p className="red">Vegetarian</p>
-          )}
-          {dishDetails?.veryHealthy ? (
-            <p className="green">Very Healthy</p>
-          ) : (
-            <p className="red">Very Healthy</p>
-          )}
+          {dishDetails?.vegan ? <p className="green">Vegan</p> : <p className="red">Vegan</p>}
+          {dishDetails?.vegetarian ? <p className="green">Vegetarian</p> : <p className="red">Vegetarian</p>}
+          {dishDetails?.veryHealthy ? <p className="green">Very Healthy</p>: <p className="red">Very Healthy</p>}
         </div>
         <img src={dishDetails?.image} alt={dishDetails?.title} />
         <div id="btn_cont" className="section_buttons">
@@ -224,53 +187,12 @@ const FoodDetails = () => {
           </button>
         </div>
         <div className="info">
-          {showIngredients ? (
-            <ul className="ingr_list">
-              {dishDetails?.extendedIngredients.map((ing, i) => {
-                return (
-                  <li key={i}>
-                    {ing.measures.metric.amount} {ing.measures.metric.unitLong}{" "}
-                    of {ing.name}{" "}
-                  </li>
-                );
-              })}
-            </ul>
-          ) : null}
-          {prepareInfo ? (
-            <div className="prepare_info">
-              <ul>
-                <li>Servings: {dishDetails?.servings}</li>
-                <li>Preparing time: {dishDetails?.readyInMinutes} min</li>
-                <li>Suggested price: {dishDetails?.suggestedPrice}</li>
-              </ul>
-              <p>{dishDetails?.instructions}</p>
-            </div>
-          ) : null}
-
-          {showInfo ? (
-            <table>
-              <thead>
-                <tr>
-                  <th>Name</th>
-                  <th>Amount</th>
-                  <th>Daily Needs</th>
-                </tr>
-              </thead>
-              <tbody>
-                {dishDetails?.nutrition.nutrients.map((item, i) => {
-                  return (
-                    <tr key={i}>
-                      <td>{item.name}</td>
-                      <td>
-                        {item.amount} {item.unit}
-                      </td>
-                      <td>{item.percentOfDailyNeeds}%</td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          ) : null}
+          {showIngredients ? <IngredientsList extendedIngredients={dishDetails!.extendedIngredients} />
+           : null}
+          {prepareInfo ?  <DishPreparing servings={dishDetails!.servings} readyInMinutes={dishDetails!.readyInMinutes} suggestedPrice={dishDetails!.suggestedPrice} instructions={dishDetails!.instructions} />
+           : null}
+          {showInfo ? <AdditionalInfo nutrients={dishDetails!.nutrition.nutrients}/>
+           : null}
         </div>
       </section>
     </Container>
