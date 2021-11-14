@@ -11,15 +11,25 @@ const Card = styled.div`
     flex-direction: column;
     border-top-left-radius:20px;
     border-top-right-radius:20px;
+    @media only screen and (max-width:450px){
+        width: 350px;
+        height: 400px;
+    }
+    @media only screen and (max-width:350px){
+        width: 270px;
+        height: 350px;
+    }
     & > h2{
         padding: 5px 5px;
         font-size: 20px;
         height: 20%;
         text-align: center;
+        @media only screen and (max-width:400px){
+        font-size: 15px;
+    }
     }
     & > img {
         height: 70%;
-
     }
     & > a{
         height: 10%;
@@ -40,13 +50,10 @@ const Card = styled.div`
         }
     }
 `;
-
 interface Props {
     title:string;
     imgSrc:string;
     id:number;
-
-
 }
 const ProductCard: React.FC<Props> = ({title,imgSrc,id}) => {
     return (
