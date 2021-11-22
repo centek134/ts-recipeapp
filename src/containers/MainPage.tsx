@@ -38,6 +38,8 @@ const MainPage = () => {
         `https://api.spoonacular.com/recipes/complexSearch?&cuisine=${queryString}&number=20&apiKey=2f82075fb2ab456f8f690ee0710297d5`,
         {
           method: "GET",
+          credentials:"same-origin",
+          
         }
       )
         .then((response) => response.json())

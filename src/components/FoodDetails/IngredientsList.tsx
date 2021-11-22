@@ -27,15 +27,28 @@ interface Props{
 const IngredientsList = ({extendedIngredients}:Props) => {
     return (
         <IngList>
-        {extendedIngredients.map((ing, i) => {
-          return (
-            <li key={i}>
-              {ing.measures.metric.amount} {ing.measures.metric.unitLong}{" "}
-              of {ing.name}{" "}
-            </li>
-          );
-        })}
+            {extendedIngredients.map((ing, i) => {
+    return (
+      <li key={i}>
+        {ing.measures.metric.amount} {ing.measures.metric.unitLong}{" "}
+        of {ing.name}{" "}
+      </li>
+    );
+  })}
       </IngList>
     )
-}
+  }
+  
+  /*
+  
+  {extendedIngredients.map((ing, i) => {
+    return (
+      <li key={i}>
+        {ing.measures.metric.amount} {ing.measures.metric.unitLong}{" "}
+        of {ing.name}{" "}
+      </li>
+    );
+  })}
+
+*/ 
 export default IngredientsList;

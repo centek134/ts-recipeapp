@@ -49,6 +49,10 @@ const Container = styled.main`
     }
     & > div.section_buttons {
       width: 100%;
+      & > button.black{
+        background-color:#000000 ;
+        color: #ffffff;
+      }
       & > button {
         padding: 10px 15px;
         background-color: #ffffff;
@@ -73,6 +77,9 @@ const Container = styled.main`
       font-size: 20px;
       background-color: #000000;
       color: #ffffff;
+      min-height: 200px;
+      padding: 10px; 
+
     }
   }
 `;
@@ -115,28 +122,34 @@ interface Dish {
 }
 
 const FoodDetails = () => {
-  const [dishDetails, setDishDetails] = useState<Dish["data"]>();
-  const [showIngredients, setShowIngredients] = useState<boolean>(true);
-  const [prepareInfo, setPrepareInfo] = useState<boolean>(false);
-  const [showInfo, setShowInfo] = useState<boolean>(false);
-
+  
   useEffect(() => {
     fetch(
       `https://api.spoonacular.com/recipes/${window.location.search.slice(
         2
-      )}/information?includeNutrition=true&apiKey=2f82075fb2ab456f8f690ee0710297d5`,
-      {
-        method: "GET",
-      }
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        console.log("CZy to to danie?", data);
-        setDishDetails(data);
-      });
-    console.log("fetched data", dishDetails);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+        )}/information?includeNutrition=true&apiKey=2f82075fb2ab456f8f690ee0710297d5`,
+        {
+          method: "GET",
+          credentials: "same-origin"
+        }
+        )
+        .then((response) => response.json())
+        .then((data) => {
+          console.log("CZy to to danie?", data);
+          setDishDetails(data);
+        });
+        console.log("fetched data", dishDetails);
+        setTimeout(() => {
+            console.log("mam dane");
+        }, 1000);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+      }, []);
+      
+      const [dishDetails, setDishDetails] = useState<Dish["data"]>();
+      const [showIngredients, setShowIngredients] = useState<boolean>(false);
+      const [prepareInfo, setPrepareInfo] = useState<boolean>(false);
+      const [showInfo, setShowInfo] = useState<boolean>(false);
+
 
   const infoBtnHandler = (opt: string,e: React.MouseEvent<HTMLButtonElement>) => {
     switch (opt) {
@@ -161,8 +174,13 @@ const FoodDetails = () => {
     btnClassHandler(e)
   };
 
-  const btnClassHandler = (e:React.MouseEvent<HTMLButtonElement>) => {
-      console.log(e);
+  const btnClassHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
+      document.getElementById("btn_cont")?.querySelectorAll("button").forEach(btn => {
+        btn.classList.remove("black");
+      });
+      e.currentTarget.classList.add("black");
+      
+
   }
 
   return (
@@ -186,10 +204,10 @@ const FoodDetails = () => {
             Additional info
           </button>
         </div>
-        <div className="info">
-          {showIngredients ? <IngredientsList extendedIngredients={dishDetails!.extendedIngredients} />
-           : null}
+        <div className="info">    
           {prepareInfo ?  <DishPreparing servings={dishDetails!.servings} readyInMinutes={dishDetails!.readyInMinutes} suggestedPrice={dishDetails!.suggestedPrice} instructions={dishDetails!.instructions} />
+           : null}
+           {showIngredients ? <IngredientsList extendedIngredients={dishDetails!.extendedIngredients} />
            : null}
           {showInfo ? <AdditionalInfo nutrients={dishDetails!.nutrition.nutrients}/>
            : null}
@@ -198,5 +216,8 @@ const FoodDetails = () => {
     </Container>
   );
 };
+/*       
 
+
+*/
 export default FoodDetails;
