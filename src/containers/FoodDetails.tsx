@@ -3,6 +3,7 @@ import styled from "styled-components";
 import AdditionalInfo from "../components/FoodDetails/AdditionalInfo";
 import DishPreparing from "../components/FoodDetails/DishPreparing";
 import IngredientsList from "../components/FoodDetails/IngredientsList";
+import Buttons from "../components/FoodDetails/Buttons";
 const Container = styled.main`
   width: 100%;
   background-color: #ebebeb;
@@ -45,31 +46,6 @@ const Container = styled.main`
       & > p.red {
         color: #ff0000;
         border: 2px solid #ff0000;
-      }
-    }
-    & > div.section_buttons {
-      width: 100%;
-      & > button.black{
-        background-color:#000000 ;
-        color: #ffffff;
-      }
-      & > button {
-        padding: 10px 15px;
-        background-color: #ffffff;
-        color: #000000;
-        border: 2px solid #000000;
-        font-size: 18px;
-        cursor: pointer;
-        &:active {
-          color: #000000;
-          background-color: #ffffff;
-          border: 2px solid #ffffff;
-        }
-        &:hover{
-            background-color: #000000;
-            color: #ffffff;
-            border:2px solid #000000;
-        }
       }
     }
     & > div.info {
@@ -122,6 +98,11 @@ interface Dish {
 }
 
 const FoodDetails = () => {
+
+  const [dishDetails, setDishDetails] = useState<Dish["data"]>();
+  const [showIngredients, setShowIngredients] = useState<boolean>(false);
+  const [prepareInfo, setPrepareInfo] = useState<boolean>(false);
+  const [showInfo, setShowInfo] = useState<boolean>(false);
   
   useEffect(() => {
     fetch(
@@ -145,44 +126,6 @@ const FoodDetails = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
       }, []);
       
-      const [dishDetails, setDishDetails] = useState<Dish["data"]>();
-      const [showIngredients, setShowIngredients] = useState<boolean>(false);
-      const [prepareInfo, setPrepareInfo] = useState<boolean>(false);
-      const [showInfo, setShowInfo] = useState<boolean>(false);
-
-
-  const infoBtnHandler = (opt: string,e: React.MouseEvent<HTMLButtonElement>) => {
-    switch (opt) {
-      case "ingredients":
-        setShowIngredients(true);
-        setPrepareInfo(false);
-        setShowInfo(false);
-        break;
-      case "preparing":
-        setPrepareInfo(true);
-        setShowInfo(false);
-        setShowIngredients(false);
-        break;
-      case "info":
-        setShowInfo(true);
-        setPrepareInfo(false);
-        setShowIngredients(false);
-        break;
-      default:
-        return;
-    };
-    btnClassHandler(e)
-  };
-
-  const btnClassHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
-      document.getElementById("btn_cont")?.querySelectorAll("button").forEach(btn => {
-        btn.classList.remove("black");
-      });
-      e.currentTarget.classList.add("black");
-      
-
-  }
-
   return (
     <Container>
       <section>
@@ -193,17 +136,7 @@ const FoodDetails = () => {
           {dishDetails?.veryHealthy ? <p className="green">Very Healthy</p>: <p className="red">Very Healthy</p>}
         </div>
         <img src={dishDetails?.image} alt={dishDetails?.title} />
-        <div id="btn_cont" className="section_buttons">
-          <button onClick={(e) => infoBtnHandler("ingredients",e)}>
-            Ingredients
-          </button>
-          <button onClick={(e) => infoBtnHandler("preparing",e)}>
-            Dish preparing
-          </button>
-          <button onClick={(e) => infoBtnHandler("info",e)}>
-            Additional info
-          </button>
-        </div>
+        <Buttons setShowIngredients={setShowIngredients} setPrepareInfo={setPrepareInfo} setShowInfo={setShowInfo}/>
         <div className="info">    
           {prepareInfo ?  <DishPreparing servings={dishDetails!.servings} readyInMinutes={dishDetails!.readyInMinutes} suggestedPrice={dishDetails!.suggestedPrice} instructions={dishDetails!.instructions} />
            : null}
@@ -216,8 +149,5 @@ const FoodDetails = () => {
     </Container>
   );
 };
-/*       
 
-
-*/
 export default FoodDetails;
