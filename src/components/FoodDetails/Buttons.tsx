@@ -14,6 +14,10 @@ const BtnContainer = styled.div`
     border: 2px solid #000000;
     font-size: 18px;
     cursor: pointer;
+    @media (max-width:750px){
+      font-size: 14px;
+      padding: 5px 10px;
+    }
     &:active {
       color: #000000;
       background-color: #ffffff;

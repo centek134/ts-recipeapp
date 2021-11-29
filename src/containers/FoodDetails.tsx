@@ -13,7 +13,7 @@ const Container = styled.main`
   & > section {
     height: 100%;
     background-color: #ffffff;
-    flex: 0.5;
+    flex: 0.6;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -53,8 +53,11 @@ const Container = styled.main`
       font-size: 20px;
       background-color: #000000;
       color: #ffffff;
-      min-height: 200px;
+      min-height: 350px;
       padding: 10px; 
+      @media (max-width:750px){
+        font-size: 14px;
+      }
 
     }
   }
